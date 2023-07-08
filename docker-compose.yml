@@ -1,0 +1,20 @@
+version: '3.9'
+
+networks:
+  projectNet:
+    driver: bridge
+
+services:
+  bd:
+    container_name: DB
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Projeto123
+      - MSSQL_PID=Express
+    build:
+      context: ./DB
+      dockerfile: Dockerfile
+    ports:
+      - 1455:1433
+    networks:
+      - projectNet
