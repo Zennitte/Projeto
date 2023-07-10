@@ -1,4 +1,4 @@
-using System.Reflection;
+using System.Text.Json.Serialization;
 using API.Contexts;
 using API.Interfaces;
 using API.Repositories;
@@ -7,7 +7,11 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+	.AddJsonOptions(options =>
+	{
+		options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+	});
 
 builder.Services.AddCors(options => {
 	options.AddPolicy("CorsPolicy", builder =>
@@ -22,6 +26,7 @@ builder.Services.AddSwaggerGen(c =>
 {
 	c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projeto", Version = "v1" });
 });
+
 
 builder.Services.AddDbContext<ProjectContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddTransient<IUserRepository, UsersRepository>();

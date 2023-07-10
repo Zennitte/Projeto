@@ -11,34 +11,32 @@ namespace API.Repositories
         {
 			ctx = appContext;
 		}
-        public void Create(Account account)
-        {
-            ctx.Accounts.Add(account);
 
-            ctx.SaveChanges();
-        }
-
-        public void Delete(string id)
-        {
-            ctx.Remove(GetById(id));
-
-            ctx.SaveChanges();
-        }
-
-        public Account GetById(string id)
-        {
-			return ctx.Accounts.First(a => a.Id == id);
+		public List<Account> GetAll()
+		{
+			return ctx.Accounts.Select(a => new Account()
+			{
+				Balance = a.Balance,
+				Id = a.Id,
+				UserId = a.UserId,
+				User = new User() {
+					Username = a.User.Username
+				}
+			}).ToList();
 		}
 
-        public void Update(string id, Account account)
+		public Account GetById(string id)
         {
-            Account account1 = GetById(id);
-
-            account1 = account;
-
-            ctx.Accounts.Update(account1);
-
-            ctx.SaveChanges();
-        }
+			return ctx.Accounts.Where(a => a.Id == id).Select(a => new Account()
+			{
+				Balance = a.Balance,
+				Id = a.Id,
+				UserId = a.UserId,
+				User = new User()
+				{
+					Username = a.User.Username
+				}
+			}).First();
+		}
     }
 }

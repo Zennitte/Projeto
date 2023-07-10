@@ -13,7 +13,9 @@ namespace API.Repositories
         }
         public void Create(Transaction transaction)
         {
-            Account debitedAccount = ctx.Accounts.Where(a => a.Id == transaction.DebbitedAccountNavigation.Id).Select(a => new Account() { 
+			transaction.Id = Guid.NewGuid().ToString("N");
+
+			Account debitedAccount = ctx.Accounts.Where(a => a.Id == transaction.DebbitedAccountNavigation.Id).Select(a => new Account() { 
                 Balance = a.Balance,
                 Id = a.Id,
                 UserId = a.UserId,

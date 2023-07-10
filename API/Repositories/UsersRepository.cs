@@ -1,6 +1,7 @@
 ﻿using API.Contexts;
 using API.Domains;
 using API.Interfaces;
+using API.ViewModels;
 using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace API.Repositories
@@ -13,20 +14,26 @@ namespace API.Repositories
         {
             ctx = appContext;
         }
-        public void Create(User user)
+        public User Create(UsersCreateViewModel user)
         {
-            user.Password = BCryptNet.HashPassword(user.Password);
+            User user1 = new();
+            user1.Id = Guid.NewGuid().ToString("N");
+            user1.Username = user.Username;
+            user1.Password = BCryptNet.HashPassword(user.Password);
 
-            ctx.Users.Add(user);
+            ctx.Users.Add(user1);
+
+            Account userAccount = new Account {
+                Id = Guid.NewGuid().ToString("N"),
+                UserId = user1.Id,
+                Balance = new Decimal(200.00)
+            };
+
+            ctx.Accounts.Add(userAccount);
 
             ctx.SaveChanges();
-        }
 
-        public void Delete(string id)
-        {
-            ctx.Users.Remove(GetById(id));
-
-            ctx.SaveChanges();
+            return GetById(user1.Id);
         }
 
         public List<User> GetAll()
@@ -36,7 +43,11 @@ namespace API.Repositories
 
         public User GetById(string id)
         {
-            return ctx.Users.First(u => u.Id == id);
+            return ctx.Users.Select(u => new User() { 
+                Id = u.Id,
+                Username = u.Username,
+                Password = u.Password
+            }).First(u => u.Id == id);
         }
 
         public User? Login(string username, string password)

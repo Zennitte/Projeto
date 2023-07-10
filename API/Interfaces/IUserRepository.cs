@@ -1,11 +1,11 @@
 ﻿using API.Domains;
+using API.ViewModels;
 
 namespace API.Interfaces
 {
     public interface IUserRepository
     {
-        void Create(User user);
-        void Delete(string id);
+        User Create(UsersCreateViewModel user);
         User GetById(string id);
         List<User> GetAll();
         User? Login(string username, string password);
