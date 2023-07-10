@@ -1,6 +1,7 @@
 ﻿using API.Contexts;
 using API.Domains;
 using API.Interfaces;
+using API.ViewModels;
 
 namespace API.Repositories
 {
@@ -11,17 +12,15 @@ namespace API.Repositories
         {
             ctx = appContext;
         }
-        public void Create(Transaction transaction)
+        public Transaction Create(TransactionsCreateViewModel transaction)
         {
-			transaction.Id = Guid.NewGuid().ToString("N");
-
-			Account debitedAccount = ctx.Accounts.Where(a => a.Id == transaction.DebbitedAccountNavigation.Id).Select(a => new Account() { 
+			Account debitedAccount = ctx.Accounts.Where(a => a.User.Username == transaction.DebitedUser).Select(a => new Account() { 
                 Balance = a.Balance,
                 Id = a.Id,
                 UserId = a.UserId,
             }).First();
 
-			Account creditedAccount = ctx.Accounts.Where(a => a.Id == transaction.CreditedAccountNavigation.Id).Select(a => new Account()
+			Account creditedAccount = ctx.Accounts.Where(a => a.User.Username == transaction.CreditedUser).Select(a => new Account()
 			{
 				Balance = a.Balance,
 				Id = a.Id,
@@ -35,14 +34,23 @@ namespace API.Repositories
                     throw new Exception();
                 }
 
-                debitedAccount.Balance = debitedAccount.Balance - transaction.Amount;
+				Transaction transaction1 = new Transaction();
+				transaction1.Id = Guid.NewGuid().ToString("N");
+				transaction1.Amount = transaction.Amount;
+				transaction1.CreatedAt = DateTime.Now;
+                transaction1.CreditedAccount = creditedAccount.Id;
+                transaction1.DebbitedAccount = debitedAccount.Id;
+
+				debitedAccount.Balance = debitedAccount.Balance - transaction.Amount;
                 creditedAccount.Balance = creditedAccount.Balance + transaction.Amount;
 
                 ctx.Accounts.Update(debitedAccount);
                 ctx.Accounts.Update(creditedAccount);
 
-                ctx.Transactions.Add(transaction);
+                ctx.Transactions.Add(transaction1);
                 ctx.SaveChanges();
+
+                return transaction1;
             }
             catch (Exception)
             {
@@ -53,17 +61,72 @@ namespace API.Repositories
 
         public List<Transaction> GetAll()
         {
-            return ctx.Transactions.ToList();
+            return ctx.Transactions.Select(t => new Transaction { 
+                Amount = t.Amount,
+                CreatedAt = t.CreatedAt,
+                DebbitedAccountNavigation = new Account() { 
+                    Balance = t.DebbitedAccountNavigation.Balance,
+                    User = new User() { 
+                        Username = t.DebbitedAccountNavigation.User.Username
+					}
+                },
+                CreditedAccountNavigation = new Account() { 
+                    Balance = t.CreditedAccountNavigation.Balance,
+                    User = new User() { 
+                        Username = t.CreditedAccountNavigation.User.Username
+                    }
+                }
+            }).ToList();
         }
 
         public List<Transaction> GetCashIn(string id)
         {
-            return ctx.Transactions.Where(t => t.CreditedAccountNavigation.Id == id).ToList();
+            return ctx.Transactions.Where(t => t.CreditedAccountNavigation.Id == id).Select(t => new Transaction
+            {
+                Amount = t.Amount,
+                CreatedAt = t.CreatedAt,
+                DebbitedAccountNavigation = new Account()
+                {
+                    Balance = t.DebbitedAccountNavigation.Balance,
+                    User = new User()
+                    {
+                        Username = t.DebbitedAccountNavigation.User.Username
+                    }
+                },
+                CreditedAccountNavigation = new Account()
+                {
+                    Balance = t.CreditedAccountNavigation.Balance,
+                    User = new User()
+                    {
+                        Username = t.CreditedAccountNavigation.User.Username
+                    }
+                }
+            }).ToList();
         }
 
         public List<Transaction> GetCashOut(string id)
         {
-			return ctx.Transactions.Where(t => t.DebbitedAccountNavigation.Id == id).ToList();
+			return ctx.Transactions.Where(t => t.DebbitedAccountNavigation.Id == id).Select(t => new Transaction
+			{
+				Amount = t.Amount,
+				CreatedAt = t.CreatedAt,
+				DebbitedAccountNavigation = new Account()
+				{
+					Balance = t.DebbitedAccountNavigation.Balance,
+					User = new User()
+					{
+						Username = t.DebbitedAccountNavigation.User.Username
+					}
+				},
+				CreditedAccountNavigation = new Account()
+				{
+					Balance = t.CreditedAccountNavigation.Balance,
+					User = new User()
+					{
+						Username = t.CreditedAccountNavigation.User.Username
+					}
+				}
+			}).ToList();
 		}
     }
 }
