@@ -1,11 +1,14 @@
-﻿using API.Domains;
+﻿using System.IdentityModel.Tokens.Jwt;
+using API.Domains;
 using API.Interfaces;
 using API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class TransactionsController : ControllerBase
@@ -16,9 +19,11 @@ namespace API.Controllers
 			_transactionRepository = transactionRepository;
         }
 
-        [HttpGet]
+        [HttpGet("All")]
 		public IActionResult GetAll() {
-			List<Transaction> transactions = _transactionRepository.GetAll();
+			string id = HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
+
+			List<Transaction> transactions = _transactionRepository.GetAll(id);
 
 			try
 			{
@@ -32,6 +37,56 @@ namespace API.Controllers
 
 				return Ok(transactions);
             }
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		[HttpGet("CashIn")]
+		public IActionResult GetCashIn() {
+			string id = HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
+
+			List<Transaction> transactions = _transactionRepository.GetCashIn(id);
+
+			try
+			{
+				if (transactions == null)
+				{
+					return BadRequest(new
+					{
+						Message = "Nenhum usuário encontrado"
+					});
+				}
+
+				return Ok(transactions);
+			}
+			catch (Exception)
+			{
+
+				throw;
+			}
+		}
+
+		[HttpGet("CashOut")]
+		public IActionResult GetCashOut() {
+			string id = HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
+
+			List<Transaction> transactions = _transactionRepository.GetCashOut(id);
+
+			try
+			{
+				if (transactions == null)
+				{
+					return BadRequest(new
+					{
+						Message = "Nenhum usuário encontrado"
+					});
+				}
+
+				return Ok(transactions);
+			}
 			catch (Exception)
 			{
 

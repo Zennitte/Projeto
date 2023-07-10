@@ -1,8 +1,12 @@
-﻿using API.Domains;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using API.Domains;
 using API.Interfaces;
 using API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers
 {
@@ -16,7 +20,8 @@ namespace API.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet]
+		[Authorize]
+		[HttpGet]
         public IActionResult GetAll() { 
             List<User> users = _userRepository.GetAll();
 
@@ -39,6 +44,7 @@ namespace API.Controllers
 			}
         }
 
+		[Authorize]
 		[HttpGet("{id}")]
 		public IActionResult Get(string id) {
 			User user = _userRepository.GetById(id);
@@ -75,7 +81,22 @@ namespace API.Controllers
 
             if (user != null)
             {
-				return Ok(user);
+				var Claims = new[]
+				{
+					new Claim(JwtRegisteredClaimNames.Jti, user.Id),
+				};
+
+				var Key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("projectKey12345678_webApi_securityKey"));
+
+				var Creds = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256);
+
+				var token = new JwtSecurityToken(issuer: "projectApi", audience: "projectApi", claims: Claims, expires: DateTime.Now.AddMinutes(30), signingCredentials: Creds);
+
+
+				return Ok(new
+				{
+					token = new JwtSecurityTokenHandler().WriteToken(token),
+				});
             }
             else
             {

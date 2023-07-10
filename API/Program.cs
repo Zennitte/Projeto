@@ -3,6 +3,7 @@ using API.Contexts;
 using API.Interfaces;
 using API.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,8 +26,50 @@ builder.Services.AddCors(options => {
 builder.Services.AddSwaggerGen(c =>
 {
 	c.SwaggerDoc("v1", new OpenApiInfo { Title = "Projeto", Version = "v1" });
+
+	c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+	{
+		Description = "JWT Authorization header using the Bearer scheme.",
+		Name = "Authorization",
+		In = ParameterLocation.Header,
+		Type = SecuritySchemeType.ApiKey,
+		Scheme = "Bearer"
+	});
+
+	c.AddSecurityRequirement(new OpenApiSecurityRequirement
+		{
+			{
+				new OpenApiSecurityScheme
+				{
+					Reference = new OpenApiReference
+					{
+						Type = ReferenceType.SecurityScheme,
+						Id = "Bearer"
+					}
+				},
+				new string[] { }
+			}
+		});
+
 });
 
+builder.Services.AddAuthentication(options =>
+{
+	options.DefaultAuthenticateScheme = "JwtBearer";
+	options.DefaultChallengeScheme = "JwtBearer";
+})
+	.AddJwtBearer("JwtBearer", options => {
+		options.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidateAudience = true,
+			ValidateLifetime = true,
+			IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("projectKey12345678_webApi_securityKey")),
+			ClockSkew = TimeSpan.FromMinutes(30),
+			ValidIssuer = "projectApi",
+			ValidAudience = "projectApi"
+		};
+	});
 
 builder.Services.AddDbContext<ProjectContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddTransient<IUserRepository, UsersRepository>();
@@ -43,10 +86,11 @@ app.UseSwaggerUI(c =>
 	c.RoutePrefix = string.Empty;
 });
 	
-	
 app.UseRouting();
 
 app.UseCors("CorsPolicy");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

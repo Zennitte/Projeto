@@ -59,9 +59,9 @@ namespace API.Repositories
             }
         }
 
-        public List<Transaction> GetAll()
+        public List<Transaction> GetAll(string id)
         {
-            return ctx.Transactions.Select(t => new Transaction { 
+            return ctx.Transactions.Where(t => t.DebbitedAccountNavigation.UserId == id || t.CreditedAccountNavigation.UserId == id).Select(t => new Transaction { 
                 Amount = t.Amount,
                 CreatedAt = t.CreatedAt,
                 DebbitedAccountNavigation = new Account() { 
@@ -81,7 +81,7 @@ namespace API.Repositories
 
         public List<Transaction> GetCashIn(string id)
         {
-            return ctx.Transactions.Where(t => t.CreditedAccountNavigation.Id == id).Select(t => new Transaction
+            return ctx.Transactions.Where(t => t.CreditedAccountNavigation.UserId == id).Select(t => new Transaction
             {
                 Amount = t.Amount,
                 CreatedAt = t.CreatedAt,
@@ -106,7 +106,7 @@ namespace API.Repositories
 
         public List<Transaction> GetCashOut(string id)
         {
-			return ctx.Transactions.Where(t => t.DebbitedAccountNavigation.Id == id).Select(t => new Transaction
+			return ctx.Transactions.Where(t => t.DebbitedAccountNavigation.UserId == id).Select(t => new Transaction
 			{
 				Amount = t.Amount,
 				CreatedAt = t.CreatedAt,

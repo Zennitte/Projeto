@@ -1,5 +1,6 @@
 ﻿using API.Domains;
 using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,7 @@ namespace API.Controllers
             _accountRepository = accountRepository;
         }
 
+		[Authorize]
 		[HttpGet("{id}")]
 		public IActionResult Get(string id) {
 			Account account = _accountRepository.GetById(id);
@@ -38,6 +40,7 @@ namespace API.Controllers
 			}
 		}
 
+		[Authorize]
 		[HttpGet]
 		public IActionResult GetAll() {
 			List<Account> accounts = _accountRepository.GetAll();

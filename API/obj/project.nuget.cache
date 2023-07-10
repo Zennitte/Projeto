@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "DLJIcrrHVU8FQConUsZ90BiiMcxfj4C5yirdrS9IC9L6Jq8iziEqtheaORFc5EYSPFsRsT47XWr5JtrR1RsFXw==",
+  "dgSpecHash": "xZrYSNePCp7rgmzNKoBWPqZxaGzCQ8wxB0fnil58QM7VNYFQ6AJhpT0QODGWnPyRULEN19n6PvPiiq0+XabgQg==",
   "success": true,
   "projectFilePath": "C:\\Users\\kaue.marinho\\Documents\\projeto\\API\\API.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\kaue.marinho\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\kaue.marinho\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\kaue.marinho\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\kaue.marinho\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.19\\microsoft.aspnetcore.authentication.jwtbearer.6.0.19.nupkg.sha512",
     "C:\\Users\\kaue.marinho\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\kaue.marinho\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\kaue.marinho\\.nuget\\packages\\microsoft.data.sqlclient\\5.0.2\\microsoft.data.sqlclient.5.0.2.nupkg.sha512",
