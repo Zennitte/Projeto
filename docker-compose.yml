@@ -1,8 +1,8 @@
 version: '3.9'
 
-# networks:
-#   projectNet:
-#     driver: bridge
+networks:
+  projectNet:
+    driver: bridge
 
 services:
   bd:
@@ -16,5 +16,16 @@ services:
       dockerfile: Dockerfile
     ports:
       - 1455:1433
-    # networks:
-    #   - projectNet
+    networks:
+      - projectNet
+  api:
+    container_name: API
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    ports:
+      - 4000:80
+    networks:
+      - projectNet
+    depends_on:
+      - bd

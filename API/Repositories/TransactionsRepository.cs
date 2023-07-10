@@ -85,14 +85,6 @@ namespace API.Repositories
             {
                 Amount = t.Amount,
                 CreatedAt = t.CreatedAt,
-                DebbitedAccountNavigation = new Account()
-                {
-                    Balance = t.DebbitedAccountNavigation.Balance,
-                    User = new User()
-                    {
-                        Username = t.DebbitedAccountNavigation.User.Username
-                    }
-                },
                 CreditedAccountNavigation = new Account()
                 {
                     Balance = t.CreditedAccountNavigation.Balance,
@@ -100,8 +92,16 @@ namespace API.Repositories
                     {
                         Username = t.CreditedAccountNavigation.User.Username
                     }
-                }
-            }).ToList();
+                },
+				DebbitedAccountNavigation = new Account()
+				{
+					Balance = t.DebbitedAccountNavigation.Balance,
+					User = new User()
+					{
+						Username = t.DebbitedAccountNavigation.User.Username
+					}
+				}
+			}).ToList();
         }
 
         public List<Transaction> GetCashOut(string id)

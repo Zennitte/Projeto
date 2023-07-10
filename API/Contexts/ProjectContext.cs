@@ -23,7 +23,7 @@ public partial class ProjectContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Data Source=localhost,1455; initial catalog=DbProjeto; user Id=sa; pwd=Projeto123; Encrypt=false;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Data Source=DB; initial catalog=DbProjeto; user Id=sa; pwd=Projeto123; Encrypt=false;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
