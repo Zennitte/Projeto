@@ -8,7 +8,7 @@ GO
 USE DbProjeto;
 CREATE TABLE Users(
     Id CHAR(32) PRIMARY KEY NOT NULL,
-    Username VARCHAR(255) NOT NULL,
+    Username VARCHAR(255) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
 );
 GO

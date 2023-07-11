@@ -1,8 +1,10 @@
+using System.Reflection;
 using System.Text.Json.Serialization;
 using API.Contexts;
 using API.Interfaces;
 using API.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -50,6 +52,9 @@ builder.Services.AddSwaggerGen(c =>
 				new string[] { }
 			}
 		});
+
+	var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+	c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 
 });
 

@@ -29,7 +29,7 @@ public partial class ProjectContext : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Accounts__3214EC07CBDDF6B1");
+            entity.HasKey(e => e.Id).HasName("PK__Accounts__3214EC073810A0B4");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(32)
@@ -44,12 +44,12 @@ public partial class ProjectContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Accounts__UserId__267ABA7A");
+                .HasConstraintName("FK__Accounts__UserId__276EDEB3");
         });
 
         modelBuilder.Entity<Transaction>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC0712DABEB3");
+            entity.HasKey(e => e.Id).HasName("PK__Transact__3214EC07E10C658A");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(32)
@@ -69,17 +69,19 @@ public partial class ProjectContext : DbContext
             entity.HasOne(d => d.CreditedAccountNavigation).WithMany(p => p.TransactionCreditedAccountNavigations)
                 .HasForeignKey(d => d.CreditedAccount)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Transacti__Credi__2A4B4B5E");
+                .HasConstraintName("FK__Transacti__Credi__2B3F6F97");
 
             entity.HasOne(d => d.DebbitedAccountNavigation).WithMany(p => p.TransactionDebbitedAccountNavigations)
                 .HasForeignKey(d => d.DebbitedAccount)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Transacti__Debbi__29572725");
+                .HasConstraintName("FK__Transacti__Debbi__2A4B4B5E");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC078A6CD724");
+            entity.HasKey(e => e.Id).HasName("PK__Users__3214EC07D91C75CD");
+
+            entity.HasIndex(e => e.Username, "UQ__Users__536C85E45C713E2C").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasMaxLength(32)

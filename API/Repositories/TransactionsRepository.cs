@@ -29,6 +29,11 @@ namespace API.Repositories
 
             try
             {
+                if (debitedAccount == null || creditedAccount == null)
+                {
+                    throw new Exception();
+                }
+
                 if (transaction.Amount > debitedAccount.Balance)
                 {
                     throw new Exception();

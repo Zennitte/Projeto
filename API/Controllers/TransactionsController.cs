@@ -19,6 +19,10 @@ namespace API.Controllers
 			_transactionRepository = transactionRepository;
         }
 
+		/// <summary>
+		/// Busca todas as transações do usuário
+		/// </summary>
+		/// <returns>Retorna uma lista de transações</returns>
         [HttpGet("All")]
 		public IActionResult GetAll() {
 			string id = HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
@@ -44,6 +48,10 @@ namespace API.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Busca todas as transações de cashin do usuário
+		/// </summary>
+		/// <returns>Retorna uma lista de transações</returns>
 		[HttpGet("CashIn")]
 		public IActionResult GetCashIn() {
 			string id = HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
@@ -69,6 +77,10 @@ namespace API.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Busca todas as transações de cashout do usuário
+		/// </summary>
+		/// <returns>Retorna uma lista de transações</returns>
 		[HttpGet("CashOut")]
 		public IActionResult GetCashOut() {
 			string id = HttpContext.User.Claims.First(c => c.Type == JwtRegisteredClaimNames.Jti).Value;
@@ -94,11 +106,24 @@ namespace API.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Cria uma transação
+		/// </summary>
+		/// <param name="transaction"></param>
+		/// <returns>Retorna uma transação</returns>
 		[HttpPost]
-		public IActionResult Create(TransactionsCreateViewModel transaction) { 
-			Transaction transaction1 = _transactionRepository.Create(transaction);
-
-			return Ok(transaction1);
+		public IActionResult Create(TransactionsCreateViewModel transaction) {
+			try
+			{
+				Transaction transaction1 = _transactionRepository.Create(transaction);
+				return Ok(transaction1);
+			}
+			catch (Exception)
+			{
+				return BadRequest(new { 
+					Message = "Erro ao criar transação, conta provavelmente inexistente"
+				});
+			}
 		}
 	}
 }

@@ -88,3 +88,5 @@ C:\Users\kaue.marinho\Documents\projeto\API\bin\Debug\net6.0\Swashbuckle.AspNetC
 C:\Users\kaue.marinho\Documents\projeto\API\obj\Debug\net6.0\API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\kaue.marinho\Documents\projeto\API\bin\Debug\net6.0\BCrypt.Net-Next.dll
 C:\Users\kaue.marinho\Documents\projeto\API\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\kaue.marinho\Documents\projeto\API\bin\Debug\net6.0\API.xml
+C:\Users\kaue.marinho\Documents\projeto\API\obj\Debug\net6.0\API.xml

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API</name>
+    </assembly>
+    <members>
+        <member name="M:API.Controllers.AccountsController.Get(System.String)">
+            <summary>
+            Busca uma conta por id
+            </summary>
+            <param name="id"></param>
+            <returns>Retorna uma conta</returns>
+        </member>
+        <member name="M:API.Controllers.AccountsController.GetAll">
+            <summary>
+            Busca todas as contas da aplicação
+            </summary>
+            <returns>Retorna uma lista de contas</returns>
+        </member>
+        <member name="M:API.Controllers.TransactionsController.GetAll">
+            <summary>
+            Busca todas as transações do usuário
+            </summary>
+            <returns>Retorna uma lista de transações</returns>
+        </member>
+        <member name="M:API.Controllers.TransactionsController.GetCashIn">
+            <summary>
+            Busca todas as transações de cashin do usuário
+            </summary>
+            <returns>Retorna uma lista de transações</returns>
+        </member>
+        <member name="M:API.Controllers.TransactionsController.GetCashOut">
+            <summary>
+            Busca todas as transações de cashout do usuário
+            </summary>
+            <returns>Retorna uma lista de transações</returns>
+        </member>
+        <member name="M:API.Controllers.TransactionsController.Create(API.ViewModels.TransactionsCreateViewModel)">
+            <summary>
+            Cria uma transação
+            </summary>
+            <param name="transaction"></param>
+            <returns>Retorna uma transação</returns>
+        </member>
+        <member name="M:API.Controllers.UsersController.GetAll">
+            <summary>
+            Busca todos os usuários da aplicação
+            </summary>
+            <returns>Retorna uma lista de usuários</returns>
+        </member>
+        <member name="M:API.Controllers.UsersController.Get(System.String)">
+            <summary>
+            Busca um usuário por seu id
+            </summary>
+            <param name="id"></param>
+            <returns>Retorna um usuário</returns>
+        </member>
+        <member name="M:API.Controllers.UsersController.Create(API.ViewModels.UsersCreateViewModel)">
+            <summary>
+            Cria um usuário
+            </summary>
+            <param name="user"></param>
+            <returns>Retorna um usuário</returns>
+        </member>
+        <member name="M:API.Controllers.UsersController.Login(System.String,System.String)">
+            <summary>
+            Loga o usuário na aplicação
+            </summary>
+            <param name="username"></param>
+            <param name="password"></param>
+            <returns>Retorna um token jwt</returns>
+        </member>
+    </members>
+</doc>

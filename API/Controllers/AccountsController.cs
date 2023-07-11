@@ -16,6 +16,11 @@ namespace API.Controllers
             _accountRepository = accountRepository;
         }
 
+		/// <summary>
+		/// Busca uma conta por id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Retorna uma conta</returns>
 		[Authorize]
 		[HttpGet("{id}")]
 		public IActionResult Get(string id) {
@@ -40,6 +45,10 @@ namespace API.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Busca todas as contas da aplicação
+		/// </summary>
+		/// <returns>Retorna uma lista de contas</returns>
 		[Authorize]
 		[HttpGet]
 		public IActionResult GetAll() {

@@ -20,6 +20,10 @@ namespace API.Controllers
             _userRepository = userRepository;
         }
 
+		/// <summary>
+		/// Busca todos os usuários da aplicação
+		/// </summary>
+		/// <returns>Retorna uma lista de usuários</returns>
 		[Authorize]
 		[HttpGet]
         public IActionResult GetAll() { 
@@ -44,6 +48,11 @@ namespace API.Controllers
 			}
         }
 
+		/// <summary>
+		/// Busca um usuário por seu id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns>Retorna um usuário</returns>
 		[Authorize]
 		[HttpGet("{id}")]
 		public IActionResult Get(string id) {
@@ -68,13 +77,35 @@ namespace API.Controllers
 			}
 		}
 
+
+		/// <summary>
+		/// Cria um usuário
+		/// </summary>
+		/// <param name="user"></param>
+		/// <returns>Retorna um usuário</returns>
 		[HttpPost]
 		public IActionResult Create(UsersCreateViewModel user) {
-			User user1 = _userRepository.Create(user);
 
-			return Ok(user1);
+			try
+			{
+				User user1 = _userRepository.Create(user);
+
+				return Ok(user1);
+			}
+			catch (Exception)
+			{
+				return BadRequest(new { 
+					Message= "Erro ao criar usuário, username provavelmente já existente"
+				});
+			}	
 		}
 
+		/// <summary>
+		/// Loga o usuário na aplicação
+		/// </summary>
+		/// <param name="username"></param>
+		/// <param name="password"></param>
+		/// <returns>Retorna um token jwt</returns>
 		[HttpPost("Login")]
 		public IActionResult Login(string username, string password) {
 			User user = _userRepository.Login(username, password);
